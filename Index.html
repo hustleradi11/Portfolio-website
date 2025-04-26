@@ -1,0 +1,269 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Kumar | Data Scientist Aspirant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-gray-800/90 backdrop-blur-md fixed w-full z-20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-400">Aditya Kumar</h1>
+            <div class="space-x-6">
+                <a href="#skills" class="text-gray-300 hover:text-blue-400 transition">Skills</a>
+                <a href="#projects" class="text-gray-300 hover:text-blue-400 transition">Projects</a>
+                <a href="#resume" class="text-gray-300 hover:text-blue-400 transition">Resume</a>
+                <a href="#contact" class="text-gray-300 hover:text-blue-400 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-blue-900">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <img src="D:\S\profie-picture.jpg" alt="Aditya Kumar Profile Picture"
+            class="rounded-full mx-auto mb-6 border-4 border-blue-400 shadow-lg"
+            style="width: 160px; height: 219px;">
+                   <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 fade-in">Student | Aspiring Data Scientist</h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8 fade-in">I’m passionate about uncovering insights from data and turning them into impactful solutions. With a solid foundation in Python, SQL, and machine learning, I’ve built projects that solve real-world problems using data-driven approaches.</p>
+            <a href="#contact" class="bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition hover-scale">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-white mb-12 fade-in">Expertise</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-700 p-8 rounded-xl shadow-lg hover-scale fade-in">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4"><img src="https://img.icons8.com/color/48/000000/code.png" alt="Languages Icon" class="inline w-6 h-6 mr-2">Languages</h3>
+                    
+<p class="text-gray-300 space-y-2">
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/c-plus-plus-logo.png" class="inline w-5 h-5 mr-1" /> C++</span>
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/java-coffee-cup-logo.png" class="inline w-5 h-5 mr-1" /> Java</span>
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/c-programming.png" class="inline w-5 h-5 mr-1" /> C</span>
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/python.png" class="inline w-5 h-5 mr-1" /> Python</span>
+</p>
+
+                </div>
+                <div class="bg-gray-700 p-8 rounded-xl shadow-lg hover-scale fade-in">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4"><img src="https://img.icons8.com/color/48/000000/source-code.png" alt="Frameworks Icon" class="inline w-6 h-6 mr-2">Frameworks</h3>
+                    
+<p class="text-gray-300 space-y-2">
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/html-5--v1.png" class="inline w-5 h-5 mr-1" /> HTML</span>
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/css3.png" class="inline w-5 h-5 mr-1" /> CSS</span>
+  <span class="block"><img src="https://img.icons8.com/color/24/000000/javascript--v1.png" class="inline w-5 h-5 mr-1" /> JavaScript</span>
+</p>
+
+                </div>
+                
+<div class="bg-gray-700 p-8 rounded-xl shadow-lg hover-scale fade-in">
+    <h3 class="text-2xl font-semibold text-blue-400 mb-4">
+        <img src="https://img.icons8.com/color/48/000000/toolbox.png" alt="Tools Icon" class="inline w-6 h-6 mr-2">Tools/Platforms
+    </h3>
+    <p class="text-gray-300 space-y-2">
+        <span class="block"><img src="https://img.icons8.com/color/24/000000/mysql-logo.png" class="inline w-5 h-5 mr-1" /> MySQL</span>
+        <span class="block"><img src="https://img.icons8.com/ios-filled/24/ffffff/r-project.png" class="inline w-5 h-5 mr-1" /> R</span>
+        <span class="block"><img src="https://img.icons8.com/color/24/000000/tableau-software.png" class="inline w-5 h-5 mr-1" /> Tableau</span>
+        <span class="block"><img src="https://img.icons8.com/color/24/000000/microsoft-excel-2019--v1.png" class="inline w-5 h-5 mr-1" /> MS Excel</span>
+        <span class="block"><img src="https://img.icons8.com/color/24/000000/git.png" class="inline w-5 h-5 mr-1" /> Git</span>
+        <span class="block"><img src="https://img.icons8.com/color/24/000000/visual-studio-code-2019.png" class="inline w-5 h-5 mr-1" /> VS Code</span>
+    </p>
+</div>
+
+                <div class="bg-gray-700 p-8 rounded-xl shadow-lg hover-scale fade-in md:col-span-3">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4">Soft Skills</h3>
+                    <p class="text-gray-300">Team Player, Problem Solving, Project Management</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-white mb-12 fade-in">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover-scale fade-in">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4">Machine Learning-Based Breast Cancer Diagnosis in R</h3>
+                    <p class="text-gray-300 mb-4">Analyzed breast cell biopsy images by extracting features such as size, shape, and texture of cell nuclei to classify tumours as malignant or benign. Applied multiple machine learning algorithms to predict cancer diagnosis, including KNN, Naive Bayes, Decision Trees, Regression models, KNN Clustering, and Neural Networks. Achieved 15% more accurate cancer diagnoses thanks to algorithm optimisation. (Oct 24 - Nov 24)</p>
+                    <a href="#" class="text-blue-400 hover:text-blue-500 transition">View Project</a>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover-scale fade-in">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4">Sales Analytics Dashboard in Tableau</h3>
+                    <p class="text-gray-300 mb-4">Developed an interactive Tableau dashboard to track sales, profit, discount, and quantity trends across various dimensions such as region, category, and customer segment. Integrated and cleaned sales data, ensuring accurate insights from fields like Order ID, Ship Mode, Customer Details, Product Category, and Sales Figures. Reduced data processing time by 20% by cleaning and structuring raw sales data in Tableau. (Aug 24 - Sept 24)</p>
+                    <a href="#" class="text-blue-400 hover:text-blue-500 transition">View Project</a>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover-scale fade-in">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-4">LEAF Association Website</h3>
+                    <p class="text-gray-300 mb-4">Developed a responsive and interactive website for LEAF Association, a hypothetical NGO, using HTML, CSS, and JavaScript, providing details about its mission, activities, and contribution opportunities. Designed a user-friendly frontend interface with smooth navigation and engaging UI, incorporating interactive features using JavaScript to enhance user experience. Hosted and managed the project on GitHub, ensuring version control and seamless collaboration. (Aug 24 - Nov 24)</p>
+                    <a href="#" class="text-blue-400 hover:text-blue-500 transition">View Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Certificates Section -->
+    <section id="certificates" class="py-20 bg-gray-800">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-white mb-12 fade-in">Certificates</h2>
+        <p class="text-xl text-gray-300 mb-8 fade-in">A glimpse of certifications showcasing my learning journey.</p>
+
+        <div class="space-y-4 max-w-2xl mx-auto text-left text-gray-300 fade-in">
+          <div class="bg-gray-700 p-4 rounded-lg shadow hover-scale transition">
+            <p class="font-semibold text-blue-400">Programming in C++: A Hands-on Introduction (Coursera)</p>
+            <a href="Coursera JREUHCNVJMLL (1).pdf" target="_blank" class="text-blue-300 hover:underline">View Certificate</a>
+          </div>
+
+          <div class="bg-gray-700 p-4 rounded-lg shadow hover-scale transition">
+            <p class="font-semibold text-blue-400">The Bits and Bytes of Computer Networking (Google via Coursera)</p>
+            <a href="Coursera TL6537FJA6GF.pdf" target="_blank" class="text-blue-300 hover:underline">View Certificate</a>
+          </div>
+
+          <div class="bg-gray-700 p-4 rounded-lg shadow hover-scale transition">
+            <p class="font-semibold text-blue-400">Blockchain Certificate (Programming Pathshala)</p>
+            <a href="669ba48775386515a82559a2 (1).pdf" target="_blank" class="text-blue-300 hover:underline">View Certificate</a>
+          </div>
+        </div>
+
+    </section>
+
+<!-- Resume Section -->
+    <section id="resume" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 fade-in">Download My Resume</h2>
+            <p class="text-xl text-gray-300 mb-8 fade-in">Explore my professional journey, including education, projects, and certifications.</p>
+            <a href="Aditya CV.pdf" download class="bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition hover-scale">Download Resume</a>
+            <div class="mt-8 text-left max-w-3xl mx-auto">
+                <h3 class="text-2xl font-semibold text-blue-400 mb-4 fade-in">Education</h3>
+                <p class="text-gray-300 mb-4 fade-in"><strong>Lovely Professional University</strong><br>Bachelor of Technology - Computer Science and Engineering; CGPA: 6.13<br>Punjab, India, Since August 2022</p>
+                <p class="text-gray-300 mb-4 fade-in"><strong>P.P.M</strong><br>Intermediate: <br>Singrauli, Madhya Pradesh, April 2021 - March 2022</p>
+                <p class="text-gray-300 mb-4 fade-in"><strong>Christ Jyoti Sr Sec School</strong><br>Matriculation: <br>Jehanabad, Bihar, April 2019 - March 2020</p>
+                <h3 class="text-2xl font-semibold text-blue-400 mb-4 fade-in">Achievements</h3>
+                <ul class="text-gray-300 list-disc list-inside fade-in">
+                    <li>Participated in Smart India Hackathon (SIH): Dec 24, Among 60+ teams in 40k+ students in University.</li>
+                    <li>One among S1 top 40% students at University: For good academic performance and extra-curricular activities at University.</li>
+                    <li>One India Cultural Festival, Lovely Professional University: Mar 24, Secured 2nd runner-up position among 25+ teams, competing against thousands of students from diverse backgrounds.</li>
+                </ul>
+                <h3 class="text-2xl font-semibold text-blue-400 mb-4 fade-in">Summer Training</h3>
+                <p class="text-gray-300 mb-4 fade-in"><strong>Geeks for Geeks (EdTech)</strong><br>Data Structure and Algorithm<br>Completed Data Structures and Algorithms Self-Paced Course from GeeksforGeeks, covering arrays, linked lists, trees, graphs, and dynamic programming. Gained hands-on experience by solving coding problems commonly asked in technical interviews. Enhanced problem-solving skills and optimized algorithmic thinking for competitive programming and software development. (Aug 22 - Nov 22)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 fade-in">Let's Connect</h2>
+            <p class="text-xl text-gray-300 mb-8 fade-in">Interested in collaborating or have a project in mind? Reach out!</p>
+            <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg fade-in">
+                <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name" class="w-full p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:outline-none focus:border-blue-400" required>
+                    <input type="email" name="email" placeholder="Your Email" class="w-full p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:outline-none focus:border-blue-400" required>
+                    <input type="tel" name="phone" placeholder="Your Phone Number" class="w-full p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:outline-none focus:border-blue-400">
+                    <button type="submit" class="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition">Send Message</button>
+                </form>
+            </div>
+            <div class="flex justify-center space-x-6 mt-8">
+                <a href="mailto:adika6410@gmail.com" class="text-blue-400 hover:text-blue-500 transition">adika6410@gmail.com</a>
+                <a href="https://linkedin.com/in/aditya-kumar" target="_blank" class="text-blue-400 hover:text-blue-500 transition">LinkedIn</a>
+                <a href="https://github.com/adityakumar" target="_blank" class="text-blue-400 hover:text-blue-500 transition">GitHub</a>
+                <p class="text-blue-400 hover:text-blue-500 transition"> Call me : +917292889428</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 Aditya Kumar. Built with passion and precision.</p>
+        </div>
+    </footer>
+
+    <script>
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.querySelectorAll('.fade-in').forEach((element) => {
+            gsap.fromTo(element, 
+                { opacity: 0, y: 20 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6, 
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: element,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
